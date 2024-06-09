@@ -35,6 +35,7 @@ psql:
 	@PGPASSWORD=$(POSTGRES_PASSWORD) psql -h localhost -p $(POSTGRES_PORT_EXPOSE) -U $(POSTGRES_USER) -d $(POSTGRES_DB)
 
 sql:
+	# usage: make sql QUERY="select * from inventory limit 10;"
 	@echo "Executing SQL on PostgreSQL at localhost:$(POSTGRES_PORT_EXPOSE)"
 	@PGPASSWORD=$(POSTGRES_PASSWORD) psql -h localhost -p $(POSTGRES_PORT_EXPOSE) -U $(POSTGRES_USER) -d $(POSTGRES_DB) -c "${QUERY}"
 

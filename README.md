@@ -42,7 +42,8 @@ Under the hood, prefixes are implicit instructions for S3 to partition the physi
 - Anonymizer script to share bucket structure without conveying objects names
 
 ## Future
-- Adding other GIS-like layers of insights: Cost, Access Logs, Lifecycle Rules
+- Adding other GIS-like layers of insights: Cost, Access Logs, Lifecycle Rules, Object Attributes, CloudFront
+- Support Parquet Inventory input
 
 ## Getting Started
 ### Prerequisites
@@ -52,7 +53,53 @@ Under the hood, prefixes are implicit instructions for S3 to partition the physi
 1. Clone the repository:
    ```sh
    git clone https://github.com/PointFiveLabs/s3dmap.git
+   ```
+1. Enter the s3dmap directory:
+   ```sh
    cd s3dmap
+   ```
+1. End-to-end docker-compose build:
+   ```sh
    make full
    ```
-2. Open browser on: https://localhost:2323/
+
+1. Open browser at: https://localhost:2323/  
+That will allow you to see the preloaded sample-bucket out-of-the-box
+
+## Usage Guides
+### Loading your own Bucket
+#### CSV Inventory Export
+1. [Create the CSV S3 Inventory export for your bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/configure-inventory.html#configure-inventory-console).  
+When creating the export, choose as much optional columns to be included as desired. Non-checked columns will limit the tool's dimensions options.
+1. Put the CSV files under `user_input_data/inventories/<BUCKET_NAME>/csv` along with the [corresponding `manifest.json`](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-inventory-location.html#storage-inventory-location-manifest).
+1. Run:
+    ```sh
+    make full
+    ```
+1. Open browser at: https://localhost:2323/
+1. Fill your `<BUCKET_NAME>` as the bucket name and hit Enter
+
+### Anonymize your Bucket Object Names
+1. Load your bucket inventory as instructed above.
+1. Run:
+    ```sh
+    make anonymize BUCKET_NAME=<BUCKET_NAME>
+    ```
+    This will deep copy your bucket's inventory data using randomly mangled names, as a new bucket called `sample-bucket`
+1. Open browser at: https://localhost:2323/
+1. Fill `sample-bucket` as the bucket name and hit Enter
+
+### Run your own SQL Queries on Inventory and Prefixes
+1. Load your bucket inventory as instructed above.
+1. Run `make sql`  
+1. The main tables at your command:
+    1. `inventory`
+    1. `prefixes`
+
+Example usage:
+```sh
+make sql QUERY="select * from inventory limit 10;"
+```
+```sh
+make sql QUERY="select * from prefixes limit 10;"
+```
