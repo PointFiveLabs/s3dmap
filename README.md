@@ -1,8 +1,6 @@
-# S3DMap
+# <img src="app/static/favicon.ico" alt="S3DMap Logo" height="22"/> S3DMap
 
-<p float="left">
-    <img src="app/static/s3dmap.png" alt="S3DMap Logo" width="200"/>
-</p>
+<img src="app/static/s3dmap.gif" alt="S3DMap Logo"/>
 
 
 S3DMap is a new visual open-source tool that aids in S3 cost optimization. It is based on the suggested S3 prefix-level cost optimization methodology (POOM), as [presented in PlatformCon2024](https://platformcon.com/talks/s3dmap-a-visual-storage-map-for-prefixlevel-cost-optimization-methodology).
@@ -13,7 +11,6 @@ Inspired by SpaceMonger from the 2000s, the tool enables interactive treemap bro
 
 Think of it as a self-serve tool for mining cost optimization opportunities, based on an S3 Bucket Inventory export.
 
-![Demo GIF Placeholder](app/static/s3dmap.gif)
 
 ## The Goal: Efficient Buckets Architecture
 
