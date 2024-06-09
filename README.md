@@ -90,12 +90,15 @@ While the ideal architecture strives to create the "designated bucket" (coined b
    make full
    ```
 
-1. Open browser at: https://localhost:2323/  
-That will allow you to see the preloaded sample-bucket out-of-the-box
+1. Open browser at: https://localhost:2323/ and hit "*Update Treemap*"  
+
+That will allow you to browse the preloaded sample-bucket out-of-the-box
 
 ## 📚 Usage Guides
 
 ### Loading your own Bucket
+
+This is where it gets interesting and you can start mining insights visually! Really just by looking at the map!
 
 ##### CSV
 1. [Create the CSV S3 Inventory export for your bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/configure-inventory.html#configure-inventory-console).  
@@ -115,10 +118,7 @@ Not supported yet. Accepting PRs!
 For advanced research and custom investigations - you may directly query the raw `inventory` table, or the transformed `prefixes` table, using the underlying Postgres DB.
 
 1. Load your bucket inventory as instructed above.
-1. Run `make sql`  
-1. The main tables at your command:
-    1. `inventory`
-    1. `prefixes`
+1. Run `make sql QUERY="<YOUR QUERY>;"`  
     
 Example usage:
 ```sh
@@ -129,6 +129,8 @@ make sql QUERY="select * from prefixes limit 10;"
 ```
 
 ### Anonymize your Bucket Object Names
+In case you want to show/share/screenshot your bucket's map but not convey real object names, you may anonymize the bucket's inventory.
+
 1. Load your bucket inventory as instructed above.
 1. Run:
     ```sh
@@ -142,12 +144,12 @@ make sql QUERY="select * from prefixes limit 10;"
 
 Accepting PRs!
 
-- Adding other GIS-like layers of insights (available in our [platform](https://pointfive.co)):
+- Support Parquet Inventory input (available in our [platform](https://pointfive.co))
+- Automate Inventory export creation, using AWS CLI or IaC files (Terraform/CloudFormation) (available in our [platform](https://pointfive.co))
+- Obtain an existing Inventory export directly from the target bucket
+- Ingesting and processing other GIS-like layers of insights (available in our [platform](https://pointfive.co)):
     - Cost (CUR)
     - Access Logs
     - Lifecycle Rules
     - Object Attributes
     - CloudFront
-- Support Parquet Inventory input (available in our [platform](https://pointfive.co))
-- Obtain an existing Inventory export directly from the target bucket
-- Automate Inventory export creation, using AWS CLI or IaC files (Terraform/CloudFormation) (available in our [platform](https://pointfive.co))
