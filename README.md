@@ -21,9 +21,12 @@ Think of it as a self-serve tool for mining cost optimization opportunities, bas
 
 For a full managed experience and automatic cost optimization recommendations across all dimensions and use cases, feel free to [reach out and get PointFive platform on your environment](https://pointfive.co)!
 
-## 🎯 The Goal: Efficient Buckets Architecture
+## ✨ Features
+- 🧮 Interactive treemap browsing of S3 bucket storage
+- 📟 Detailed prefix-level analysis, using configurable layers of insights
+- 📜 Direct SQL interface on the Object level and Prefix level, for custom advanced research
+- 🤡 Anonymizer script to share bucket structure without conveying objects names
 
-Choose the correct storage class for all objects given their usage pattern and attributes.
 
 ## 🌟 Example Use Cases
 <p float="left">
@@ -39,12 +42,9 @@ Choose the correct storage class for all objects given their usage pattern and a
   <img src="Resources/Use Cases Slides/8.png" width="24.5%" />
 </p>
 
-## ✨ Features
-- Interactive treemap browsing of S3 bucket storage
-- Detailed prefix-level analysis, using configurable layers of insights
-- Direct SQL interface on the Object level and Prefix level, for custom advanced research
-- Anonymizer script to share bucket structure without conveying objects names
+## 🎯 The Goal: Efficient Buckets Architecture
 
+Choose the correct storage class for all objects given their usage pattern and attributes.
 
 ## 🧩 The Methodology
 
