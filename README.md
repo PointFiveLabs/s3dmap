@@ -19,6 +19,20 @@ For a full managed experience and automatic cost optimization recommendations ac
 
 Choose the correct storage class for all objects given their usage pattern and attributes.
 
+## Example Use Cases
+<p float="left">
+  <img src="Resources/Use Cases Slides/1.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/2.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/3.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/4.png" width="24.5%" />
+</p>
+<p float="left">
+  <img src="Resources/Use Cases Slides/5.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/6.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/7.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/8.png" width="24.5%" />
+</p>
+
 ## Features
 - Interactive treemap browsing of S3 bucket storage
 - Detailed prefix-level analysis, using configurable layers of insights
@@ -50,20 +64,6 @@ While the ideal architecture strives to create the "designated bucket" (coined b
     - API (prefixes actually let you horizontally scale API requests per second!)
     - Inventory
     - ...
-
-## Use Cases
-<p float="left">
-  <img src="Resources/Use Cases Slides/1.png" width="24.5%" />
-  <img src="Resources/Use Cases Slides/2.png" width="24.5%" />
-  <img src="Resources/Use Cases Slides/3.png" width="24.5%" />
-  <img src="Resources/Use Cases Slides/4.png" width="24.5%" />
-</p>
-<p float="left">
-  <img src="Resources/Use Cases Slides/5.png" width="24.5%" />
-  <img src="Resources/Use Cases Slides/6.png" width="24.5%" />
-  <img src="Resources/Use Cases Slides/7.png" width="24.5%" />
-  <img src="Resources/Use Cases Slides/8.png" width="24.5%" />
-</p>
 
 ## Getting Started
 ### Prerequisites
