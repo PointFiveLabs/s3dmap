@@ -14,18 +14,18 @@ Inspired by SpaceMonger from the 2000s, the tool enables interactive treemap bro
 Think of it as a self-serve tool for mining cost optimization opportunities, based on your S3 Bucket Inventory export.
 
 🚀 Please do contribute and share your use cases and ideas, via:
-* Github Discussions/Issues
+* Github [Discussions](https://github.com/PointFiveLabs/s3dmap/discussions)/[Issues](https://github.com/PointFiveLabs/s3dmap/issues)
 * [LinkedIn](https://www.linkedin.com/in/dorazouri/)
 * [Twitter/X](https://x.com/bemikre)
 * [dorazouri@pointfive.co](mailto:dorazouri@pointfive.co)
 
-For a full managed experience and automatic cost optimization recommendations across all dimensions and use cases, feel free to [reach out and get PointFive platform on your environment](https://pointfive.co)!
+For a fully managed experience and automatic cost optimization recommendations across all dimensions and use cases, feel free to [reach out and get PointFive platform on your environment](https://pointfive.co)!
 
 ## ✨ Features
-- 🧮 Interactive treemap browsing of S3 bucket storage
-- 📟 Detailed prefix-level analysis, using configurable layers of insights
-- 📜 Direct SQL interface on the Object level and Prefix level, for custom advanced research
-- 🤡 Anonymizer script to share bucket structure without conveying objects names
+- 🧮 **Interactive treemap** browsing of S3 bucket storage
+- 📟 **Detailed prefix-level analysis**, using configurable layers of insights
+- 📜 **Direct SQL interface** on the Object level and Prefix level, for custom advanced research
+- 🤡 **Anonymizer script** to share bucket structure without conveying objects names
 
 
 ## 🌟 Example Use Cases
