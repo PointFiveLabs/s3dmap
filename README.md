@@ -3,17 +3,23 @@
 <img src="app/static/s3dmap.gif" alt="S3DMap Logo"/>
 
 
-S3DMap is a new visual open-source tool that aids in S3 cost optimization. It is based on the suggested S3 prefix-level cost optimization methodology (POOM), [presented in PlatformCon2024](https://platformcon.com/talks/s3dmap-a-visual-storage-map-for-prefixlevel-cost-optimization-methodology) (presentation slides [here](Resources/Presentation/S3DMap_%20A%203D%20Storage%20Map%20for%20S3%20Prefix-Level%20Cost%20Optimization%20Methodology%20-%20Dor%20Azouri.pdf)).
+**S3DMap** is a new visual open-source tool that aids in S3 cost optimization.  
+It is based on the suggested S3 prefix-level cost optimization methodology (POOM):  
+[Presented in PlatformCon2024](https://platformcon.com/talks/s3dmap-a-visual-storage-map-for-prefixlevel-cost-optimization-methodology) (presentation slides [here](Resources/Presentation/S3DMap_%20A%203D%20Storage%20Map%20for%20S3%20Prefix-Level%20Cost%20Optimization%20Methodology%20-%20Dor%20Azouri.pdf)).
 
-The methodology and tool emerged from extensive research performed by the 5x team at PointFive and are based on real-world case studies.
+The methodology and tool emerged from extensive research performed by the **5x** team at **PointFive** and are based on real-world case studies.
 
 Inspired by SpaceMonger from the 2000s, the tool enables interactive treemap browsing of your bucket's storage with configurable layers of insights.
 
 Think of it as a self-serve tool for mining cost optimization opportunities, based on your S3 Bucket Inventory export.
 
-Please do contribute and share your use cases and ideas (Email: dorazouri@pointfive.co)!
+Please do contribute and share your use cases and ideas, via:
+* Github Discussions/Issues
+* [LinkedIn](https://www.linkedin.com/in/dorazouri/)
+* [Twitter/X](https://x.com/bemikre)
+* [dorazouri@pointfive.co](mailto:dorazouri@pointfive.co)
 
-For a full managed experience and automatic cost optimization recommendations across all dimensions and use cases, feel free to [contact us and get PointFive platform on your environment](https://pointfive.co)!
+For a full managed experience and automatic cost optimization recommendations across all dimensions and use cases, feel free to [reach out and get PointFive platform on your environment](https://pointfive.co)!
 
 ## The Goal: Efficient Buckets Architecture
 
