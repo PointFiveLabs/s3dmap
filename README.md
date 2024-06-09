@@ -1,8 +1,8 @@
 # S3DMap
 
-![Logo Placeholder](path/to/logo.png)
+<img src="app/static/s3dmap.png" alt="S3DMap Logo" width="200"/>
 
-S3DMap is a new visual open-source tool that aids in S3 cost optimization. It is based on the suggested S3 prefix-level cost optimization methodology, accompanied by the new open-source tool.
+S3DMap is a new visual open-source tool that aids in S3 cost optimization. It is based on the suggested S3 prefix-level cost optimization methodology (POOM), as [presented in #PlatformCon2024](https://platformcon.com/talks/s3dmap-a-visual-storage-map-for-prefixlevel-cost-optimization-methodology).
 
 The methodology and tool emerged from extensive research performed by the 5x team at PointFive and are based on real-world case studies.
 
