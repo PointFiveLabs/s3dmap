@@ -3,14 +3,17 @@
 <img src="app/static/s3dmap.gif" alt="S3DMap Logo"/>
 
 
-S3DMap is a new visual open-source tool that aids in S3 cost optimization. It is based on the suggested S3 prefix-level cost optimization methodology (POOM), as [presented in PlatformCon2024](https://platformcon.com/talks/s3dmap-a-visual-storage-map-for-prefixlevel-cost-optimization-methodology).
+S3DMap is a new visual open-source tool that aids in S3 cost optimization. It is based on the suggested S3 prefix-level cost optimization methodology (POOM), [presented in PlatformCon2024](https://platformcon.com/talks/s3dmap-a-visual-storage-map-for-prefixlevel-cost-optimization-methodology).
 
 The methodology and tool emerged from extensive research performed by the 5x team at PointFive and are based on real-world case studies.
 
-Inspired by SpaceMonger from the 2000s, the tool enables interactive treemap browsing of your bucket's storage with configurable layers of insights. S3DMap will become public on the day of the event via GitHub.
+Inspired by SpaceMonger from the 2000s, the tool enables interactive treemap browsing of your bucket's storage with configurable layers of insights.
 
-Think of it as a self-serve tool for mining cost optimization opportunities, based on an S3 Bucket Inventory export.
+Think of it as a self-serve tool for mining cost optimization opportunities, based on your S3 Bucket Inventory export.
 
+Please do contribute and share your use cases and ideas (Email: dorazouri@pointfive.co)!
+
+For a full managed experience and automatic cost optimization recommendations across all dimensions and use cases, feel free to [contact us and get PointFive platform on your environment](https://pointfive.co)!
 
 ## The Goal: Efficient Buckets Architecture
 
@@ -37,6 +40,9 @@ Under the hood, prefixes are implicit instructions for S3 to partition the physi
 - Detailed prefix-level analysis
 - Configurable layers of insights
 - Anonymizer script to share bucket structure without conveying objects names
+
+## Future
+- Adding other GIS-like layers of insights: Cost, Access Logs, Lifecycle Rules
 
 ## Getting Started
 ### Prerequisites
