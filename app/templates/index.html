@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S3DMap: S3 Bucket Spacemonger by PointFive</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    #filterForm {
+      border-bottom: 2px solid #dedede;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+  <style>
+    .loader {
+      border: 6px solid #f3f3f3;
+      /* Light grey */
+      border-top: 6px solid #3498db;
+      /* Blue */
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 2s linear infinite;
+      margin: 50px auto;
+      /* Center the loader */
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body class="flex flex-col w-full h-screen">
+  <div id="header" class="flex w-full items-center">
+    <form id="filterForm" class="flex justify-start items-center p-[20px] bg-white w-full">
+      <div id="logo" class="flex items-center min-w-max">
+        <img src="./static/s3dmap.png" alt="PointFive Logo" class="w-10 h-10" />
+        <h2 class="mr-10 ml-3">S3DMap</h2>
+      </div>
+
+      <div id="filters" class="flex flex-wrap gap-3">
+        <!-- bucket name start -->
+
+        <div class="w-[200px]">
+          <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Bucket</label>
+          <div class="relative mt-1 rounded-md shadow-sm">
+            <input type="text" name="bucket" id="bucket"
+              class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 truncate"
+              value="sample-bucket" />
+          </div>
+        </div>
+
+        <!-- max depth start -->
+
+        <div class="w-[200px]">
+          <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Max Depth</label>
+          <div class="relative mt-1 rounded-md shadow-sm">
+            <input type="number" name="filter_max_depth" id="filter_max_depth"
+              class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="0" value="3" />
+          </div>
+        </div>
+
+        <!-- box size dimension start -->
+
+        <div
+          x-data='{ open: false, selected: "sum_size", options: [["sum_size", "Total Size"], ["avg_size", "Average Size"], ["depth", "Depth"], ["count_distinct_key", "Objects Count"], ["max_depth", "Maximum Depth"], ["avg_depth", "Average Depth"], ["max_size", "Maximum Size"], ["min_size", "Minimum Size"], ["avg_size", "Average Size"], ["count_distinct_suffix", "Suffixes Count"], ["count_distinct_storage_class", "Storage Classes Count"], ["ratio_intt_coverage_count", "Intelligent Tiering Coverage (count of objects)"], ["ratio_intt_coverage_size", "Intelligent Tiering Coverage (size of objects)"], ["count_version", "Versions Count"], ["ratio_version_latest_count", "Average Versions Count per Object"], ["ratio_version_latest_size", "Average Versions Size per Object"], ["max_days_since_last_modified", "Days Since Last Modified (by latest)"], ["min_days_since_last_modified", "Days Since Last Modified (by first)"], ["avg_days_since_last_modified", "Days Since Last Modified (by average)"], ["count_distinct_owner", "Owners Count"]] }'>
+          <label id="listbox-label" class="block text-sm font-medium leading-6 text-gray-900">Box Size Dimension</label>
+          <div class="relative mt-1 w-[200px]">
+            <button x-on:click="open = !open" type="button"
+              class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6"
+              aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label">
+              <span class="flex items-center">
+                <span class="ml-3 block truncate" x-text="options.find(option => option[0] === selected)[1]"></span>
+                <input type="hidden" name="size_dimension" x-bind:value="selected" />
+              </span>
+              <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z"
+                    clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+
+            <ul x-show="open" @click.outside="open = false"
+              class="absolute z-10 mt-1 max-h-56 w-[400px] overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+              tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
+              <template x-for="(option, index) in options" :key="index">
+                <li x-on:click="selected = option[0]; open = false" x-bind:id="'listbox-option-' + index"
+                  class="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" role="option">
+                  <div class="flex items-center">
+                    <span class="font-normal ml-3 block truncate" x-text="option[1]"></span>
+                  </div>
+
+                  <span x-show="selected === option[0]"
+                    class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4">
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd"
+                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </li>
+              </template>
+            </ul>
+          </div>
+        </div>
+
+        <!-- box color dimension start -->
+        <div
+          x-data='{ open: false, selected: "avg_size", options: [["sum_size", "Total Size"], ["avg_size", "Average Size"], ["depth", "Depth"], ["count_distinct_key", "Objects Count"], ["max_depth", "Maximum Depth"], ["avg_depth", "Average Depth"], ["max_size", "Maximum Size"], ["min_size", "Minimum Size"], ["avg_size", "Average Size"], ["count_distinct_suffix", "Suffixes Count"], ["count_distinct_storage_class", "Storage Classes Count"], ["ratio_intt_coverage_count", "Intelligent Tiering Coverage (count of objects)"], ["ratio_intt_coverage_size", "Intelligent Tiering Coverage (size of objects)"], ["count_version", "Versions Count"], ["ratio_version_latest_count", "Average Versions Count per Object"], ["ratio_version_latest_size", "Average Versions Size per Object"], ["max_days_since_last_modified", "Days Since Last Modified (by latest)"], ["min_days_since_last_modified", "Days Since Last Modified (by first)"], ["avg_days_since_last_modified", "Days Since Last Modified (by average)"], ["count_distinct_owner", "Owners Count"], ["distinct_suffix", "Suffixes"], ["distinct_storage_class", "Storage Classes"], ["is_intt", "Is Intelligent Tiering"], ["is_version", "Do Versions Exist"], ["distinct_owner", "Owners"]] }'>
+          <label id="listbox-label" class="block text-sm font-medium leading-6 text-gray-900">Box Color
+            Dimension</label>
+          <div class="relative mt-1 w-[200px]">
+            <button x-on:click="open = !open" type="button"
+              class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6"
+              aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label">
+              <span class="flex items-center">
+                <span class="ml-3 block truncate" x-text="options.find(option => option[0] === selected)[1]"></span>
+                <input type="hidden" name="color_dimension" x-bind:value="selected" />
+              </span>
+              <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z"
+                    clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+
+            <ul x-show="open" @click.outside="open = false"
+              class="absolute z-10 mt-1 max-h-56 w-[400px] overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+              tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
+              <template x-for="(option, index) in options" :key="index">
+                <li x-on:click="selected = option[0]; open = false" x-bind:id="'listbox-option-' + index"
+                  class="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" role="option">
+                  <div class="flex items-center">
+                    <span class="font-normal ml-3 block truncate" x-text="option[1]"></span>
+                  </div>
+
+                  <span x-show="selected === option[0]"
+                    class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4">
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd"
+                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </li>
+              </template>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit"
+        class="min-w-max inline-flex items-center ml-3 px-4 py-[7px] border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150 self-end">
+        Update Treemap
+      </button>
+    </form>
+  </div>
+  <div id="treemapContainer" class="p-[10px] mt-[5px] flex-1">
+    <div id="emptyState" style="width: 100%; height: 100%; margin: 0 auto">
+      <h2 style="text-align: center">
+        Enter a bucket name and click "Update Treemap" to generate a treemap.
+      </h2>
+      <flex style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 400px;
+          ">
+        <div></div>
+        <img src="./static/s3dmap.png" alt="PointFive Logo"
+          style="width: 200px; height: 200px; margin: 0px 0px 0px 0px" />
+        <div></div>
+      </flex>
+    </div>
+  </div>
+  <div id="footer" class="bg-white py-3">
+    <div class="flex items-center justify-center">
+      <!-- <h4 style="margin: 0px 020px 0px 0px">&nbsp;&nbsp;by&nbsp;</h4>
+          <a href="https://pointfive.co" target="_blank">
+            <img
+              src="./static/P5_Blue_Logo.png"
+              alt="PointFive Logo"
+              style="height: 25px; margin: 0px 0px 0px 0px"
+            />
+          </a> -->
+
+      <h4 class="text-sm text-gray-500">
+        Made with ❤️ by
+        <a href="https://pointfive.co" target="_blank" class="text-indigo-600 hover:text-indigo-500">
+          PointFive
+        </a>
+      </h4>
+    </div>
+  </div>
+
+  <script>
+    document
+      .getElementById('filterForm')
+      .addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitTreemapRequest();
+      });
+
+    function submitTreemapRequest() {
+      const form = document.getElementById('filterForm');
+      const formData = new FormData(form);
+      const params = new URLSearchParams(formData).toString();
+      const container = document.getElementById('treemapContainer');
+      // Show loading spinner
+      container.innerHTML = '<div class="loader"></div>';
+
+      fetch(`/generate_treemap?${params}`)
+        .then((response) => response.text())
+        .then((html) => {
+          const container = document.getElementById('treemapContainer');
+          container.innerHTML = html;
+          // Execute any script tags in the returned HTML
+          Array.from(container.querySelectorAll('script')).forEach(
+            (script) => {
+              const newScript = document.createElement('script');
+              newScript.text = script.text;
+              container.appendChild(newScript);
+              script.parentNode.removeChild(script);
+            }
+          );
+          window.scrollTo({
+            top: container.offsetTop + 26,
+            behavior: 'smooth',
+          });
+        })
+        .catch((error) => console.error('Error loading the treemap:', error));
+    }
+
+    document
+      .getElementById('increaseDepth')
+      .addEventListener('click', function () {
+        let maxDepthInput = document.getElementById('filter_max_depth');
+        maxDepthInput.value = parseInt(maxDepthInput.value) + 1;
+        submitTreemapRequest();
+      });
+
+    document
+      .getElementById('decreaseDepth')
+      .addEventListener('click', function () {
+        let maxDepthInput = document.getElementById('filter_max_depth');
+        if (parseInt(maxDepthInput.value) <= 1) {
+          return;
+        }
+        maxDepthInput.value = parseInt(maxDepthInput.value) - 1;
+        submitTreemapRequest();
+      });
+  </script>
+</body>
+
+</html>
