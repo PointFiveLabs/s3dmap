@@ -1,4 +1,4 @@
-# <img src="app/static/favicon.ico" alt="S3DMap Logo" height="22"/> S3DMap
+# <img src="app/static/favicon.ico" alt="S3DMap Logo" height="25"/> S3DMap
 
 <img src="app/static/s3dmap.gif" alt="S3DMap Logo"/>
 
@@ -13,7 +13,7 @@ Inspired by SpaceMonger from the 2000s, the tool enables interactive treemap bro
 
 Think of it as a self-serve tool for mining cost optimization opportunities, based on your S3 Bucket Inventory export.
 
-Please do contribute and share your use cases and ideas, via:
+🚀 Please do contribute and share your use cases and ideas, via:
 * Github Discussions/Issues
 * [LinkedIn](https://www.linkedin.com/in/dorazouri/)
 * [Twitter/X](https://x.com/bemikre)
@@ -21,11 +21,11 @@ Please do contribute and share your use cases and ideas, via:
 
 For a full managed experience and automatic cost optimization recommendations across all dimensions and use cases, feel free to [reach out and get PointFive platform on your environment](https://pointfive.co)!
 
-## The Goal: Efficient Buckets Architecture
+## 🎯 The Goal: Efficient Buckets Architecture
 
 Choose the correct storage class for all objects given their usage pattern and attributes.
 
-## Example Use Cases
+## 🌟 Example Use Cases
 <p float="left">
   <img src="Resources/Use Cases Slides/1.png" width="24.5%" />
   <img src="Resources/Use Cases Slides/2.png" width="24.5%" />
@@ -39,31 +39,31 @@ Choose the correct storage class for all objects given their usage pattern and a
   <img src="Resources/Use Cases Slides/8.png" width="24.5%" />
 </p>
 
-## Features
+## ✨ Features
 - Interactive treemap browsing of S3 bucket storage
 - Detailed prefix-level analysis, using configurable layers of insights
 - Direct SQL interface on the Object level and Prefix level, for custom advanced research
 - Anonymizer script to share bucket structure without conveying objects names
 
 
-## The Methodology
+## 🧩 The Methodology
 
 ### Prefix-Oriented Objects Management (POOM)
 
 From AWS Official Documentation:
 > A prefix is a string of characters at the beginning of the object key name. A prefix can be any length, subject to the maximum length of the object key name (1,024 bytes). You can think of prefixes as a way to organize your data in a similar way to directories. However, prefixes are not directories.
 
-While the ideal architecture strives to create the "designated bucket" (coined by @omritsa) with a well defined purpose, you already have huge "generalized buckets" in your cloud environment, and you would probably prefer any activity rather than migrate those existing piles of data to new buckets...  
+While the ideal architecture strives to create the "designated bucket" (coined by @omritsa) with a well defined purpose, you likely already have huge "generalized buckets" in your cloud environment. And you would probably prefer any activity rather than migrate those existing piles of data to new buckets...  
 
-**The remedy comes in the form of designated-prefixes!**
+🏮 **The remedy comes in the form of designated-prefixes!** 🏮
 
 #### In a nutshell:
-- The bucket is only a semantic wrapper for the actual cost-driving entities: the prefixes (directories)
-- S3 storage is not hierarchial (excluding the new Express One Zone), but prefixes and sub-prefixes essentially create a hierarchial tree structure
-- Moreover, it is common for objects’ attributes to be fairly consistent within a specific prefix branch
-- The prefixes are the tangible organizational units in S3 for storage class management via Lifecycle Policies (a bucket does not have a storage class)
+- The bucket is **only a semantic wrapper** for the actual cost-driving entities: the prefixes (directories)
+- S3 storage is not hierarchial (excluding the new Express One Zone), but prefixes and sub-prefixes **essentially create a hierarchial tree structure**
+- Moreover, it is common for objects’ attributes to be fairly **consistent within a specific prefix branch**
+- The **prefixes are the tangible organizational units** in S3 for storage class management via Lifecycle Policies (a bucket does not have a storage class)
     - Lifecycle Policies, Expiration Policies and Intelligent Tiering, in turn, are the toolset for you to achieve the goal of the game
-- Under the hood, prefixes are implicit instructions for S3 to partition the physical data storage. Thus, most relevant S3 mechanisms work by the prefix:
+- Under the hood, prefixes are implicit instructions for S3 to partition the physical data storage. Thus, **most relevant S3 mechanisms work by the prefix**:
     - Lifecycle Policies
     - Intelligent Tiering
     - Expiration Policies
@@ -71,7 +71,8 @@ While the ideal architecture strives to create the "designated bucket" (coined b
     - Inventory
     - ...
 
-## Getting Started
+## 🚀 Getting Started
+
 ### Prerequisites
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
@@ -92,8 +93,10 @@ While the ideal architecture strives to create the "designated bucket" (coined b
 1. Open browser at: https://localhost:2323/  
 That will allow you to see the preloaded sample-bucket out-of-the-box
 
-## Usage Guides
+## 📚 Usage Guides
+
 ### Loading your own Bucket
+
 ##### CSV
 1. [Create the CSV S3 Inventory export for your bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/configure-inventory.html#configure-inventory-console).  
 When creating the export, choose as much optional columns to be included as desired. Non-checked columns will limit the tool's dimensions options.
@@ -135,16 +138,16 @@ make sql QUERY="select * from prefixes limit 10;"
 1. Open browser at: https://localhost:2323/
 1. Fill `sample-bucket` as the bucket name and hit Enter
 
-## Future
+## 🌟 Future Plans
 
 Accepting PRs!
 
-- Adding other GIS-like layers of insights:
+- Adding other GIS-like layers of insights (available in our [platform](https://pointfive.co)):
     - Cost (CUR)
     - Access Logs
     - Lifecycle Rules
     - Object Attributes
     - CloudFront
-- Support Parquet Inventory input
+- Support Parquet Inventory input (available in our [platform](https://pointfive.co))
 - Obtain an existing Inventory export directly from the target bucket
-- Automate Inventory export creation, using AWS CLI or IaC files (Terraform/CloudFormation)
+- Automate Inventory export creation, using AWS CLI or IaC files (Terraform/CloudFormation) (available in our [platform](https://pointfive.co))
