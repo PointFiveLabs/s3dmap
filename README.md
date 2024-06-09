@@ -33,8 +33,9 @@ Choose the correct storage class for all objects given their usage pattern and a
 From AWS Official Documentation:
 > A prefix is a string of characters at the beginning of the object key name. A prefix can be any length, subject to the maximum length of the object key name (1,024 bytes). You can think of prefixes as a way to organize your data in a similar way to directories. However, prefixes are not directories.
 
-**While the ideal architecture strives to create the "designated bucket" (coined by @omritsa) with a well defined purpose, you already have huge "generalized buckets" in your cloud environment, and you would probably prefer any activity rather than migrate those existing piles of data to new buckets.  
-The remedy comes in the form of designated-prefixes!**
+While the ideal architecture strives to create the "designated bucket" (coined by @omritsa) with a well defined purpose, you already have huge "generalized buckets" in your cloud environment, and you would probably prefer any activity rather than migrate those existing piles of data to new buckets...  
+
+**The remedy comes in the form of designated-prefixes!**
 
 #### In a nutshell:
 - The bucket is only a semantic wrapper for the actual cost-driving entities: the prefixes (directories)
@@ -49,6 +50,20 @@ The remedy comes in the form of designated-prefixes!**
     - API (prefixes actually let you horizontally scale API requests per second!)
     - Inventory
     - ...
+
+## Use Cases
+<p float="left">
+  <img src="Resources/Use Cases Slides/1.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/2.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/3.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/4.png" width="24.5%" />
+</p>
+<p float="left">
+  <img src="Resources/Use Cases Slides/5.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/6.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/7.png" width="24.5%" />
+  <img src="Resources/Use Cases Slides/8.png" width="24.5%" />
+</p>
 
 ## Getting Started
 ### Prerequisites
