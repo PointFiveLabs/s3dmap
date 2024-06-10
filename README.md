@@ -1,9 +1,9 @@
 # <img src="app/static/favicon.ico" alt="S3DMap Logo" height="25"/> S3DMap
 
-<img src="app/static/s3dmap.gif" alt="S3DMap Logo"/>
+<img src="app/static/s3dmap.gif" alt="S3DMap TreeMap GIF"/>
 
 
-**S3DMap** is a visual open-source tool that aids in S3 cost optimization.  
+**S3DMap** provides an interactive 3D Tree Map of your S3 bucket, to aid in S3 cost optimization and object management.
 It is based on the suggested cost optimization methodology: Prefix Oriented Object Management (POOM).  
 Presented in [PlatformCon2024](https://platformcon.com/talks/s3dmap-a-visual-storage-map-for-prefixlevel-cost-optimization-methodology):
 * [Presentation slides](Resources/Presentation/S3DMap_%20A%203D%20Storage%20Map%20for%20S3%20Prefix-Level%20Cost%20Optimization%20Methodology%20-%20Dor%20Azouri.pdf)
