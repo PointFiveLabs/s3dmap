@@ -66,6 +66,7 @@ While the ideal architecture strives to create the "designated bucket" (coined b
 - Moreover, it is common for objects’ attributes to be fairly **consistent within a specific prefix branch**
 - The **prefixes are the tangible organizational units** in S3 for storage class management via Lifecycle Policies (a bucket does not have a storage class)
     - Lifecycle Policies, Expiration Policies and Intelligent Tiering, in turn, are the toolset for you to achieve the goal of the game
+- There are an **order of magnitude** fewer prefixes than objects, making management possible to handle and grasp.
 - Under the hood, prefixes are implicit instructions for S3 to partition the physical data storage. Thus, **most relevant S3 mechanisms work by the prefix**:
     - Lifecycle Policies
     - Intelligent Tiering
