@@ -86,8 +86,7 @@ class Ingestor:
     def ingest_parquet_dir(self, parquet_dir):
         raise NotImplementedError("Parquet ingestion is not implemented yet.")
 
-    def _get_header_columns_for_csv(self, csv_filepath):
-        manifest_filepath = csv_filepath.replace(".csv", ".json")
+    def _get_header_columns_for_csv(self, manifest_filepath):
         logging.debug(
             f"Adding header columns from manifest JSON (if exists): {manifest_filepath}"
         )
@@ -105,11 +104,12 @@ class Ingestor:
 
     def ingest_csv_dir(self, csv_dir):
         # Process each CSV file in the directory
+        header_columns = self._get_header_columns_for_csv(
+            os.path.join(csv_dir, "manifest.json"))
+        logging.info(f"Header columns: {header_columns}")
         for filename in os.listdir(csv_dir):
             if filename.endswith(".csv"):
                 csv_filepath = os.path.join(csv_dir, filename)
-                header_columns = self._get_header_columns_for_csv(csv_filepath)
-                logging.info(f"Header columns: {header_columns}")
                 logging.info(f"Processing file: {csv_filepath}")
                 self.insert_csv_to_db(csv_filepath, header_columns)
 
@@ -121,12 +121,17 @@ class Ingestor:
             for inventory_type in os.listdir(bucket_dir):
                 logging.info(f"Processing inventory type: {inventory_type}")
                 if inventory_type in self.file_handlers:
-                    inventory_type_dir = os.path.join(bucket_dir, inventory_type)
+                    inventory_type_dir = os.path.join(
+                        bucket_dir, inventory_type)
                     try:
                         self.file_handlers[inventory_type](inventory_type_dir)
                     except Exception as e:
-                        logging.error(f"Failed to process {inventory_type_dir}: {e}")
+                        logging.error(
+                            f"Failed to process {inventory_type_dir}: {e}")
                         raise e
+                else:
+                    logging.warning(
+                        f"Unsupported inventory type: {inventory_type}")
 
     def _add_header_to_csv_from_manifest_json(self, filepath):
         pass
@@ -135,23 +140,26 @@ class Ingestor:
         """Insert CSV file into the database table in chunks"""
         # Read the CSV in chunks
         max_chunks = self.max_chunks
+        is_limited_chunks = max_chunks > 0
         with pd.read_csv(
             filepath,
             chunksize=self.chunk_size,
-            header=0,
+            header=None,
             names=header_columns,
             usecols=range(len(header_columns)),
         ) as reader:
             for i, chunk in enumerate(reader):
                 logging.info(f"max_chunks: {max_chunks}")
                 max_chunks -= 1
-                if max_chunks < 0:
+                if is_limited_chunks and max_chunks < 0:
                     return
                 # Drop the column object_access_control_list
                 if "object_access_control_list" in chunk.columns:
-                    chunk.drop(columns=["object_access_control_list"], inplace=True)
+                    chunk.drop(
+                        columns=["object_access_control_list"], inplace=True)
                 # Normalize the key column (remove double slashes)
-                key_normalized = chunk.key.apply(lambda x: re.sub(r'\/\/+', '/', x))
+                key_normalized = chunk.key.apply(
+                    lambda x: re.sub(r'\/\/+', '/', x))
                 chunk = chunk.assign(key=key_normalized)
                 # Add a suffix column based on the key
                 suffix_series = chunk.key.apply(
@@ -169,7 +177,7 @@ class Ingestor:
                 chunk.columns = [c.lower() for c in chunk.columns]
                 # chunk.rename(columns={"unnamed: 0": "id"}, inplace=True)
                 # Prepare data tuple list for insertion
-                tuples = [tuple(x) for x in chunk.to_numpy()]
+                tuples = [tuple(x) for x in chunk.to_numpy(na_value=None)]
                 # Compose the query dynamically based on the CSV columns
                 cols = ",".join(list(chunk.columns))
                 values = ",".join(["%s" for _ in chunk.columns])
@@ -184,6 +192,7 @@ class Ingestor:
                 logging.info(
                     f"Inserted {len(tuples)} rows from {os.path.basename(filepath)} (Chunk {i+1})"
                 )
+
 
 def main():
     ingestor = Ingestor()
