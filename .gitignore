@@ -3,4 +3,5 @@ user_input_data/inventories/*
 app/out.json
 app/items.json
 download_inventory.sh
-rdb/prefixes_exports
+rdb/prefixes_exports/*
+!rdb/prefixes_exports/prefixes_demo_sample-bucket.csv

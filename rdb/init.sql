@@ -207,4 +207,4 @@ CREATE TABLE IF NOT EXISTS prefixes_demo
     distinct_owner text[] COLLATE pg_catalog."default"
 );
 
-COPY prefixes_demo FROM '/docker-entrypoint-initdb.d/prefixes_demo_sample-bucket.csv' CSV HEADER;
+COPY prefixes_demo FROM '/docker-entrypoint-initdb.d/prefixes_exports/prefixes_demo_sample-bucket.csv' CSV HEADER;
