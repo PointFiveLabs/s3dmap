@@ -2,3 +2,5 @@ user_input_data/inventories/*
 !user_input_data/inventories/sample-bucket/
 app/out.json
 app/items.json
+download_inventory.sh
+rdb/prefixes_exports
