@@ -67,8 +67,11 @@ class Ingestor:
             raise e
 
     def __del__(self):
-        self.cur.close()
-        self.conn.close()
+        try:
+            self.cur.close()
+            self.conn.close()
+        except:
+            pass
         logging.info("Database connection closed.")
 
     def refresh_materialized_views(self):
