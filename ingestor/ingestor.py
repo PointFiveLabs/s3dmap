@@ -114,7 +114,7 @@ class Ingestor:
             if filename == ".DS_Store":
                 continue
             else:
-                if filename.endswith(".csv.gz"):
+                if filename.endswith(".csv.gz") or filename.endswith(".csv"):
                     csv_filepath = os.path.join(csv_dir, filename)
                     logging.info(f"Processing file: {csv_filepath}")
                     self.insert_csv_to_db(csv_filepath, header_columns)
