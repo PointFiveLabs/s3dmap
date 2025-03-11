@@ -111,30 +111,40 @@ class Ingestor:
             os.path.join(csv_dir, "manifest.json"))
         logging.info(f"Header columns: {header_columns}")
         for filename in os.listdir(csv_dir):
-            if filename.endswith(".csv"):
-                csv_filepath = os.path.join(csv_dir, filename)
-                logging.info(f"Processing file: {csv_filepath}")
-                self.insert_csv_to_db(csv_filepath, header_columns)
+            if filename == ".DS_Store":
+                continue
+            else:
+                if filename.endswith(".csv.gz"):
+                    csv_filepath = os.path.join(csv_dir, filename)
+                    logging.info(f"Processing file: {csv_filepath}")
+                    self.insert_csv_to_db(csv_filepath, header_columns)
 
     def ingest_inventory_files(self):
+        logging.info(os.listdir(self.inventories_dir))
         # Process each CSV file in the directory
         for bucket_dir in os.listdir(self.inventories_dir):
-            logging.info(f"Processing bucket directory: {bucket_dir}")
-            bucket_dir = os.path.join(self.inventories_dir, bucket_dir)
-            for inventory_type in os.listdir(bucket_dir):
-                logging.info(f"Processing inventory type: {inventory_type}")
-                if inventory_type in self.file_handlers:
-                    inventory_type_dir = os.path.join(
-                        bucket_dir, inventory_type)
-                    try:
-                        self.file_handlers[inventory_type](inventory_type_dir)
-                    except Exception as e:
-                        logging.error(
-                            f"Failed to process {inventory_type_dir}: {e}")
-                        raise e
-                else:
-                    logging.warning(
-                        f"Unsupported inventory type: {inventory_type}")
+            if bucket_dir == ".DS_Store":
+                continue
+            else:
+                logging.info(f"Processing bucket directory: {bucket_dir}")
+                bucket_dir = os.path.join(self.inventories_dir, bucket_dir)
+                for inventory_type in os.listdir(bucket_dir):
+                    logging.info(f"Processing inventory type: {inventory_type}")
+                    if inventory_type == ".DS_Store":
+                        continue
+                    else:
+                        if inventory_type in self.file_handlers:
+                            inventory_type_dir = os.path.join(
+                                bucket_dir, inventory_type)
+                            try:
+                                self.file_handlers[inventory_type](inventory_type_dir)
+                            except Exception as e:
+                                logging.error(
+                                    f"Failed to process {inventory_type_dir}: {e}")
+                                raise e
+                        else:
+                            logging.warning(
+                                f"Unsupported inventory type: {inventory_type}")
 
     def _add_header_to_csv_from_manifest_json(self, filepath):
         pass
