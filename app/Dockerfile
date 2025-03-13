@@ -1,4 +1,4 @@
-FROM centos/python-38-centos7
+FROM arm64v8/python:3.9
 
 # Set the working directory in the container
 WORKDIR /app
