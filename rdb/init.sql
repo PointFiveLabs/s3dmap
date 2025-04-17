@@ -72,6 +72,44 @@ where 1=1
 	and i.size != 0
 	and i.key != sp.subpath;
 
+CREATE OR REPLACE FUNCTION aws_s3_cost_microcents(storage_class TEXT, bytes NUMERIC) 
+  RETURNS BIGINT
+  IMMUTABLE AS $$
+DECLARE
+BEGIN
+  -- pick rate in USD per GiB‑month
+  RETURN 100000000 * bytes * (CASE storage_class
+      WHEN 'STANDARD'             THEN 0.023   -- $0.023/GB‑month
+      WHEN 'STANDARD_IA'          THEN 0.0125  -- $0.0125/GB‑month
+      WHEN 'ONEZONE_IA'           THEN 0.01    -- $0.01/GB‑month
+      WHEN 'INTELLIGENT_TIERING'  THEN 0.023   -- Frequent‑Access tier same as STANDARD
+      WHEN 'GLACIER_IR'           THEN 0.004   -- Glacier Instant Retrieval $0.004/GB‑month
+      WHEN 'GLACIER'              THEN 0.0036  -- Glacier Flexible Retrieval (10% off $0.004)
+      WHEN 'DEEP_ARCHIVE'         THEN 0.00099 -- Glacier Deep Archive $0.00099/GB‑month
+      ELSE 0.023 -- others (usually delete markers; treat as STANDARD)
+  END) / 1024 / 1024 / 1024;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION human_size(bytes NUMERIC) RETURNS TEXT IMMUTABLE AS $$
+DECLARE
+  mb CONSTANT NUMERIC := 1024 * 1024;
+  gb CONSTANT NUMERIC := mb * 1024;
+  tb CONSTANT NUMERIC := gb * 1024;
+
+BEGIN
+  IF bytes >= 8*tb THEN
+    RETURN round(bytes / tb, 2) || ' TB';
+  ELSIF bytes >= 8*gb THEN
+    RETURN round(bytes / gb, 2) || ' GB';
+  ELSIF bytes >= 8*mb THEN
+    RETURN round(bytes / mb, 2) || ' MB';
+  ELSE
+    RETURN bytes || ' b';
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
 
 create MATERIALIZED view prefixes as 
 select bucket,
@@ -87,9 +125,12 @@ select bucket,
     min(size) as min_size,
     round(avg(size)) as avg_size,
     sum(size) as sum_size,
+    round(sum(size)::NUMERIC / 1024 / 1024 / 1024 ,1) as sum_size_gb,
     -- suffix
     count(distinct suffix) as count_distinct_suffix,
     array_agg(distinct suffix) as distinct_suffix,
+    -- cost
+    round(sum(aws_s3_cost_microcents(storage_class, size)) / 100000000, 2) as cost,
     -- storage_class
     count(distinct storage_class) as count_distinct_storage_class,
     array_agg(distinct storage_class) as distinct_storage_class,

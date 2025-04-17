@@ -9,7 +9,7 @@ build:
 	docker compose -p $(PROJECT_NAME) build
 
 up:
-	docker compose -p $(PROJECT_NAME) up -d
+	docker compose -p $(PROJECT_NAME) up -d --build
 	sleep 3
 	@echo "Opening Google Chrome..."
 	@google-chrome --ignore-certificate-errors --no-sandbox --new-window https://localhost:$(APP_PORT) &
