@@ -111,7 +111,7 @@ class Ingestor:
             os.path.join(csv_dir, "manifest.json"))
         logging.info(f"Header columns: {header_columns}")
         for filename in os.listdir(csv_dir):
-            if filename.endswith(".csv"):
+            if filename.endswith(".csv") or filename.endswith(".csv.gz"):
                 csv_filepath = os.path.join(csv_dir, filename)
                 logging.info(f"Processing file: {csv_filepath}")
                 self.insert_csv_to_db(csv_filepath, header_columns)
