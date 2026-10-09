@@ -21,9 +21,9 @@ db_params = {
 }
 
 
-def query_to_df(query):
+def query_to_df(query, params=None):
     conn = psycopg2.connect(**db_params)
-    df = pd.read_sql_query(query, conn)
+    df = pd.read_sql_query(query, conn, params=params)
     conn.close()
     return df
 
@@ -213,13 +213,22 @@ def render_treemap():
         "color_dimension", default="count_distinct_suffix"
     )
 
+    table_name = (
+        os.getenv("PREFIXES_DEMO_TABLE")
+        if bucket == "sample-bucket"
+        else os.getenv("PREFIXES_MATERIALIZED_VIEW")
+    )
     query = f"""
-    SELECT * FROM {os.getenv('PREFIXES_DEMO_TABLE') if bucket == 'sample-bucket' else os.getenv('PREFIXES_MATERIALIZED_VIEW')}
+    SELECT * FROM {table_name}
     WHERE 1=1
-        AND bucket = '{bucket}'
-        AND depth <= {filter_max_depth if filter_max_depth > 0 else 1}
+        AND bucket = %(bucket)s
+        AND depth <= %(max_depth)s
     ;"""
-    df = query_to_df(query)
+    params = {
+        "bucket": bucket,
+        "max_depth": filter_max_depth if filter_max_depth > 0 else 1,
+    }
+    df = query_to_df(query, params=params)
 
     json_tree = df_to_json_tree(df.to_dict(orient="records"))
     if not json_tree:
@@ -250,8 +259,8 @@ def favicon():
 if __name__ == "__main__":
     # Specify SSL context
     app.run(
-        host="0.0.0.0",
+        host=os.getenv("APP_HOST", "127.0.0.1"),
         port=2323,
         ssl_context=("certs/cert.pem", "certs/key.pem"),
-        debug=True,
+        debug=False,
     )

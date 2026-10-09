@@ -59,6 +59,7 @@ services:
       PG_PASSWORD: ${POSTGRES_PASSWORD}
       PREFIXES_MATERIALIZED_VIEW: ${PREFIXES_MATERIALIZED_VIEW}
       PREFIXES_DEMO_TABLE: ${PREFIXES_DEMO_TABLE}
+      APP_HOST: "0.0.0.0"
     ports:
       - "${APP_PORT}:${APP_PORT}"
     working_dir: /app
